@@ -35,7 +35,7 @@ public class AvailableSchedule {
     }
 
     public void addAvailableCalendarList(SimpleDate simpleDate) {
-        mAvailableCalendarList.add(simpleCalendarToCalendar(simpleDate));
+        addAvailableCalendarList(simpleCalendarToCalendar(simpleDate));
     }
 
     public void addUnavailableCalendarList(Calendar calendar) {
@@ -43,7 +43,35 @@ public class AvailableSchedule {
     }
 
     public void addUnavailableCalendarList(SimpleDate simpleDate) {
-        mUnavailableCalendarList.add(simpleCalendarToCalendar(simpleDate));
+        addUnavailableCalendarList(simpleCalendarToCalendar(simpleDate));
+    }
+
+    public boolean removeAvailableCalendarList(Calendar calendar) {
+        for (Calendar c : mAvailableCalendarList) {
+            boolean isYearMatched = c.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
+            boolean isMonthMatched = c.get(Calendar.MONTH) == calendar.get(Calendar.MONTH);
+            boolean isDayMatched = c.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH);
+            if(isYearMatched && isMonthMatched && isDayMatched) return mAvailableCalendarList.remove(c);
+        }
+        return false;
+    }
+
+    public boolean removeAvailableCalendarList(SimpleDate simpleDate) {
+        return removeAvailableCalendarList(simpleCalendarToCalendar(simpleDate));
+    }
+
+    public boolean removeUnavailableCalendarList(Calendar calendar) {
+        for (Calendar c : mUnavailableCalendarList) {
+            boolean isYearMatched = c.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
+            boolean isMonthMatched = c.get(Calendar.MONTH) == calendar.get(Calendar.MONTH);
+            boolean isDayMatched = c.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH);
+            if(isYearMatched && isMonthMatched && isDayMatched) return mAvailableCalendarList.remove(c);
+        }
+        return false;
+    }
+
+    public boolean removeUnavailableCalendarList(SimpleDate simpleDate) {
+        return removeUnavailableCalendarList(simpleCalendarToCalendar(simpleDate));
     }
 
     public boolean isIncludeAvailableCalendarList(SimpleDate simpleDate) {

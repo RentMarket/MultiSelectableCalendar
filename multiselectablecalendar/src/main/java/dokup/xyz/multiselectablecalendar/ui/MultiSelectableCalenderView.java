@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import dokup.xyz.multiselectablecalendar.R;
+import dokup.xyz.multiselectablecalendar.entity.AvailableSchedule;
 
 /**
  * Created by e10dokup on 2016/08/26
@@ -47,6 +48,8 @@ public class MultiSelectableCalenderView extends LinearLayout {
 
     private int mYear;
     private int mMonth;
+
+    private AvailableSchedule availableSchedule = new AvailableSchedule();
 
     public MultiSelectableCalenderView(Context context) {
         super(context);
