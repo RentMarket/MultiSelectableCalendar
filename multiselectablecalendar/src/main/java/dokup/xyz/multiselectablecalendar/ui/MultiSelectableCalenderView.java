@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -189,6 +190,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
                 }
 
                 dayText.setText(String.valueOf(dayCount));
+                dayText.setOnClickListener(mOnDateClickListener);
                 dayCount++;
             }
         }
@@ -207,4 +209,11 @@ public class MultiSelectableCalenderView extends LinearLayout {
         int firstDayOfWeekOfMonth = assignedCalendar.get(Calendar.DAY_OF_WEEK);
         return mBeginningDayOfWeek > firstDayOfWeekOfMonth ? firstDayOfWeekOfMonth - mBeginningDayOfWeek + COLUMN_SIZE : firstDayOfWeekOfMonth - mBeginningDayOfWeek;
     }
+
+    private OnClickListener mOnDateClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+        }
+    };
 }
