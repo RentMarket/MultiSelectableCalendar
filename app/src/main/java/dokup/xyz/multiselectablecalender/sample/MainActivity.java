@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         MultiSelectableCalenderView calenderView = (MultiSelectableCalenderView) findViewById(R.id.calender);
-        calenderView.set(2016, 7);
+        calenderView.set(2016, 8);
     }
 }
 

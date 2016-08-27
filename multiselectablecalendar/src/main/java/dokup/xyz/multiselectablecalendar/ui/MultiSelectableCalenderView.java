@@ -2,16 +2,19 @@ package dokup.xyz.multiselectablecalendar.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import dokup.xyz.multiselectablecalendar.R;
 
 /**
  * Created by e10dokup on 2016/08/26
@@ -32,12 +35,18 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private int mBeginningDayOfWeek = Calendar.SUNDAY;
 
     // Indicate Month
+    private LinearLayout mMonthLayout;
     private TextView mMonthText;
+    private ImageView mPreviousImage;
+    private ImageView mNextImage;
 
     // Week Layout
     private LinearLayout mWeekLayout;
 
     private ArrayList<LinearLayout> mWeekLayoutList = new ArrayList<>();
+
+    private int mYear;
+    private int mMonth;
 
     public MultiSelectableCalenderView(Context context) {
         super(context);
@@ -55,6 +64,8 @@ public class MultiSelectableCalenderView extends LinearLayout {
     }
 
     public void set(int year, int month) {
+        mYear = year;
+        mMonth = month;
         setMonth(year, month - 1);
         setWeekDays();
         setDays(year, month - 1);
@@ -74,13 +85,31 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private void createMonth(Context context) {
         float scaleDensity = context.getResources().getDisplayMetrics().density;
 
+        mMonthLayout = new LinearLayout(context);
+        mMonthLayout.setOrientation(HORIZONTAL);
+        mMonthLayout.setGravity(Gravity.CENTER);
+        mMonthLayout.setPadding(0, 0, 0, (int) scaleDensity * 20);
+
+        mPreviousImage = new ImageView(context);
+        mPreviousImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.lib_ic_chevron_left_grey_500_24dp));
+        mPreviousImage.setPadding((int) scaleDensity * 10, 0, (int) scaleDensity * 10, 0);
+        mPreviousImage.setOnClickListener(mOnPreviousClickListener);
+        mMonthLayout.addView(mPreviousImage, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
         mMonthText = new TextView(context);
         mMonthText.setGravity(Gravity.CENTER_HORIZONTAL);
         mMonthText.setTextSize((int) scaleDensity * 5);
-        mMonthText.setTypeface(null, Typeface.BOLD);
-        mMonthText.setPadding(0, 0, 0, (int) scaleDensity * 10);
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        layoutParams.weight = 1;
+        mMonthLayout.addView(mMonthText, layoutParams);
 
-        addView(mMonthText, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        mNextImage = new ImageView(context);
+        mNextImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.lib_ic_chevron_right_grey_500_24dp));
+        mNextImage.setPadding((int) scaleDensity * 10, 0, (int) scaleDensity * 10, 0);
+        mNextImage.setOnClickListener(mOnNextClickListener);
+        mMonthLayout.addView(mNextImage, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+        addView(mMonthLayout, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
     }
 
     /**
@@ -227,4 +256,27 @@ public class MultiSelectableCalenderView extends LinearLayout {
 
         }
     };
+
+    private OnClickListener mOnPreviousClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(mMonth == 1) {
+                set(mYear - 1, 12);
+            } else {
+                set(mYear, mMonth - 1);
+            }
+        }
+    };
+
+    private OnClickListener mOnNextClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(mMonth == 12) {
+                set(mYear + 1, 1);
+            } else {
+                set(mYear, mMonth + 1);
+            }
+        }
+    };
+
 }
