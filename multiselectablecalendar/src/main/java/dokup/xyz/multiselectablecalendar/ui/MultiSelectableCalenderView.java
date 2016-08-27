@@ -166,6 +166,11 @@ public class MultiSelectableCalenderView extends LinearLayout {
         }
     }
 
+    /**
+     * Set assigned day of month for indicate days
+     * @param year assigned year
+     * @param month assigned month
+     */
     @SuppressLint("SimpleDateFormat")
     private void setDays(int year, int month) {
         Calendar assignedCalendar = getAssignedCalendar(year, month);
@@ -196,6 +201,12 @@ public class MultiSelectableCalenderView extends LinearLayout {
         }
     }
 
+    /**
+     * Get calendar instance which assigned month
+     * @param year assigned year
+     * @param month assigned month
+     * @return
+     */
     private Calendar getAssignedCalendar(int year, int month) {
         Calendar assignedCalendar = Calendar.getInstance();
         assignedCalendar.clear();
