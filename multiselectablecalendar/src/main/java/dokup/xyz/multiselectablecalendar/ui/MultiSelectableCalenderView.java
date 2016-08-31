@@ -233,17 +233,30 @@ public class MultiSelectableCalenderView extends LinearLayout {
                     dayText.setText(" ");
                     dayText.setOnClickListener(null);
                     skipCount--;
+                    dayText.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
                     continue;
                 }
 
                 if(lastDay < dayCount) {
                     dayText.setText(" ");
                     dayText.setOnClickListener(null);
+                    dayText.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
                     continue;
                 }
 
                 dayText.setText(String.valueOf(dayCount));
                 dayText.setOnClickListener(mOnDateClickListener);
+                SimpleDate simpleDate = new SimpleDate(mYear, mMonth, dayCount);
+                if(mAvailableSchedule.isIncludeAvailableCalendarList(simpleDate)) {
+                    dayText.setBackgroundColor(Color.parseColor("#174475"));
+                    dayText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                } else if(mAvailableSchedule.isIncludeUnavailableCalendarList(simpleDate)) {
+                    dayText.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey_300));
+                    dayText.setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
+                } else {
+                    dayText.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
+                    dayText.setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
+                }
                 dayCount++;
             }
         }
@@ -273,7 +286,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
         @Override
         public void onClick(View view) {
             int day = Integer.parseInt(((TextView) view).getText().toString());
-            SimpleDate simpleDate = new SimpleDate(mYear, mMonth - 1, day);
+            SimpleDate simpleDate = new SimpleDate(mYear, mMonth, day);
             if(mAvailableSchedule.isIncludeAvailableCalendarList(simpleDate)) {
                 // When selected day is already available
                 mAvailableSchedule.removeAvailableCalendarList(simpleDate);
