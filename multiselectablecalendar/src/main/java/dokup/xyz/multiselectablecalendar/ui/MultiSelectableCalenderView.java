@@ -2,6 +2,7 @@ package dokup.xyz.multiselectablecalendar.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -16,6 +17,7 @@ import java.util.Calendar;
 
 import dokup.xyz.multiselectablecalendar.R;
 import dokup.xyz.multiselectablecalendar.entity.AvailableSchedule;
+import dokup.xyz.multiselectablecalendar.entity.SimpleDate;
 
 /**
  * Created by e10dokup on 2016/08/26
@@ -49,21 +51,26 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private int mYear;
     private int mMonth;
 
-    private AvailableSchedule availableSchedule = new AvailableSchedule();
+    private AvailableSchedule mAvailableSchedule = new AvailableSchedule();
+
+    private Context mContext;
 
     public MultiSelectableCalenderView(Context context) {
         super(context);
-        createViews(context);
+        mContext = context;
+        createViews();
     }
 
     public MultiSelectableCalenderView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        createViews(context);
+        mContext = context;
+        createViews();
     }
 
     public MultiSelectableCalenderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        createViews(context);
+        mContext = context;
+        createViews();
     }
 
     public void set(int year, int month) {
@@ -74,40 +81,45 @@ public class MultiSelectableCalenderView extends LinearLayout {
         setDays(year, month - 1);
     }
 
-    private void createViews(Context context) {
+    private void showSchedule() {
+        // TODO: Set schedule first
+    }
+
+    private void createViews() {
         setOrientation(VERTICAL);
-        createMonth(context);
-        createWeekViews(context);
-        createDayViews(context);
+        createMonth();
+        createWeekViews();
+        createDayViews();
     }
 
     /**
      * Create view for indicate month
-     * @param context context
+     * @param
      */
-    private void createMonth(Context context) {
-        float scaleDensity = context.getResources().getDisplayMetrics().density;
+    private void createMonth() {
+        float scaleDensity = mContext.getResources().getDisplayMetrics().density;
 
-        mMonthLayout = new LinearLayout(context);
+        mMonthLayout = new LinearLayout(mContext);
         mMonthLayout.setOrientation(HORIZONTAL);
         mMonthLayout.setGravity(Gravity.CENTER);
-        mMonthLayout.setPadding(0, 0, 0, (int) scaleDensity * 20);
+        mMonthLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey_100));
+        mMonthLayout.setPadding(0, (int) scaleDensity * 20, 0, (int) scaleDensity * 20);
 
-        mPreviousImage = new ImageView(context);
-        mPreviousImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.lib_ic_chevron_left_grey_500_24dp));
+        mPreviousImage = new ImageView(mContext);
+        mPreviousImage.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.lib_ic_chevron_left_grey_500_24dp));
         mPreviousImage.setPadding((int) scaleDensity * 10, 0, (int) scaleDensity * 10, 0);
         mPreviousImage.setOnClickListener(mOnPreviousClickListener);
         mMonthLayout.addView(mPreviousImage, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
-        mMonthText = new TextView(context);
+        mMonthText = new TextView(mContext);
         mMonthText.setGravity(Gravity.CENTER_HORIZONTAL);
         mMonthText.setTextSize((int) scaleDensity * 5);
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         layoutParams.weight = 1;
         mMonthLayout.addView(mMonthText, layoutParams);
 
-        mNextImage = new ImageView(context);
-        mNextImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.lib_ic_chevron_right_grey_500_24dp));
+        mNextImage = new ImageView(mContext);
+        mNextImage.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.lib_ic_chevron_right_grey_500_24dp));
         mNextImage.setPadding((int) scaleDensity * 10, 0, (int) scaleDensity * 10, 0);
         mNextImage.setOnClickListener(mOnNextClickListener);
         mMonthLayout.addView(mNextImage, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -117,23 +129,24 @@ public class MultiSelectableCalenderView extends LinearLayout {
 
     /**
      * Create views for indicate weekdays
-     * @param context context
+     * @param
      */
-    private void createWeekViews(Context context) {
-        float scaleDensity = context.getResources().getDisplayMetrics().density;
-        mWeekLayout = new LinearLayout(context);
+    private void createWeekViews() {
+        float scaleDensity = mContext.getResources().getDisplayMetrics().density;
+        mWeekLayout = new LinearLayout(mContext);
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, mBeginningDayOfWeek);
 
         for(int i=0; i<COLUMN_SIZE; i++) {
-            TextView textView = new TextView(context);
-            textView.setGravity(Gravity.CENTER);
-            textView.setPadding(0, 0, 0, 0);
+            TextView weekText = new TextView(mContext);
+            weekText.setGravity(Gravity.CENTER);
+            weekText.setPadding(0, (int) scaleDensity * 5, 0, (int) scaleDensity * 5);
             LayoutParams layoutParams = new LayoutParams(0, LayoutParams.WRAP_CONTENT);
             layoutParams.weight = 1;
+            weekText.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
 
-            mWeekLayout.addView(textView, layoutParams);
+            mWeekLayout.addView(weekText, layoutParams);
 
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
@@ -144,23 +157,24 @@ public class MultiSelectableCalenderView extends LinearLayout {
 
     /**
      * Create views for indicate days
-     * @param context context
+     * @param
      */
-    private void createDayViews(Context context) {
-        float scaleDensity = context.getResources().getDisplayMetrics().density;
+    private void createDayViews() {
+        float scaleDensity = mContext.getResources().getDisplayMetrics().density;
 
         for(int i=0; i<ROW_SIZE; i++) {
-            LinearLayout weekRow = new LinearLayout(context);
+            LinearLayout weekRow = new LinearLayout(mContext);
             mWeekLayoutList.add(weekRow);
 
             // Create 1 week view
             for(int j=0; j<COLUMN_SIZE; j++) {
-                TextView dayText = new TextView(context);
+                TextView dayText = new TextView(mContext);
                 dayText.setGravity(Gravity.CENTER);
                 int padding = (int)(scaleDensity * 2);
                 dayText.setPadding(padding, padding, padding, padding);
                 LayoutParams layoutParams = new LayoutParams(0, (int)(scaleDensity * 48));
                 layoutParams.weight = 1;
+                dayText.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
                 weekRow.addView(dayText, layoutParams);
             }
 
@@ -217,12 +231,14 @@ public class MultiSelectableCalenderView extends LinearLayout {
 
                 if(i==0 && skipCount > 0) {
                     dayText.setText(" ");
+                    dayText.setOnClickListener(null);
                     skipCount--;
                     continue;
                 }
 
                 if(lastDay < dayCount) {
                     dayText.setText(" ");
+                    dayText.setOnClickListener(null);
                     continue;
                 }
 
@@ -256,7 +272,25 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private OnClickListener mOnDateClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-
+            int day = Integer.parseInt(((TextView) view).getText().toString());
+            SimpleDate simpleDate = new SimpleDate(mYear, mMonth - 1, day);
+            if(mAvailableSchedule.isIncludeAvailableCalendarList(simpleDate)) {
+                // When selected day is already available
+                mAvailableSchedule.removeAvailableCalendarList(simpleDate);
+                mAvailableSchedule.addUnavailableCalendarList(simpleDate);
+                view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey_300));
+                ((TextView) view).setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
+            } else if(mAvailableSchedule.isIncludeUnavailableCalendarList(simpleDate)) {
+                // When selected day is already unavailable
+                mAvailableSchedule.removeUnavailableCalendarList(simpleDate);
+                view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
+                ((TextView) view).setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
+            } else {
+                // When selected day does not have status
+                mAvailableSchedule.addAvailableCalendarList(simpleDate);
+                view.setBackgroundColor(Color.parseColor("#174475"));
+                ((TextView) view).setTextColor(ContextCompat.getColor(mContext, R.color.white));
+            }
         }
     };
 

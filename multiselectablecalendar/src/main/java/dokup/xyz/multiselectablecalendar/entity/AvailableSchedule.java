@@ -65,7 +65,7 @@ public class AvailableSchedule {
             boolean isYearMatched = c.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
             boolean isMonthMatched = c.get(Calendar.MONTH) == calendar.get(Calendar.MONTH);
             boolean isDayMatched = c.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH);
-            if(isYearMatched && isMonthMatched && isDayMatched) return mAvailableCalendarList.remove(c);
+            if(isYearMatched && isMonthMatched && isDayMatched) return mUnavailableCalendarList.remove(c);
         }
         return false;
     }
@@ -74,24 +74,32 @@ public class AvailableSchedule {
         return removeUnavailableCalendarList(simpleCalendarToCalendar(simpleDate));
     }
 
-    public boolean isIncludeAvailableCalendarList(SimpleDate simpleDate) {
+    public boolean isIncludeAvailableCalendarList(Calendar calendar) {
         for (Calendar c : mAvailableCalendarList) {
-            boolean isYearMatched = c.get(Calendar.YEAR) == simpleDate.getYear();
-            boolean isMonthMatched = c.get(Calendar.MONTH) == simpleDate.getMonth();
-            boolean isDayMatched = c.get(Calendar.DAY_OF_MONTH) == simpleDate.getDay();
+            boolean isYearMatched = c.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
+            boolean isMonthMatched = c.get(Calendar.MONTH) == calendar.get(Calendar.MONTH);
+            boolean isDayMatched = c.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH);
+            if(isYearMatched && isMonthMatched && isDayMatched) return true;
+        }
+        return false;
+    }
+
+    public boolean isIncludeAvailableCalendarList(SimpleDate simpleDate) {
+        return isIncludeAvailableCalendarList(simpleCalendarToCalendar(simpleDate));
+    }
+
+    public boolean isIncludeUnavailableCalendarList(Calendar calendar) {
+        for (Calendar c : mUnavailableCalendarList) {
+            boolean isYearMatched = c.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
+            boolean isMonthMatched = c.get(Calendar.MONTH) == calendar.get(Calendar.MONTH);
+            boolean isDayMatched = c.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH);
             if(isYearMatched && isMonthMatched && isDayMatched) return true;
         }
         return false;
     }
 
     public boolean isIncludeUnavailableCalendarList(SimpleDate simpleDate) {
-        for (Calendar c : mUnavailableCalendarList) {
-            boolean isYearMatched = c.get(Calendar.YEAR) == simpleDate.getYear();
-            boolean isMonthMatched = c.get(Calendar.MONTH) == simpleDate.getMonth();
-            boolean isDayMatched = c.get(Calendar.DAY_OF_MONTH) == simpleDate.getDay();
-            if(isYearMatched && isMonthMatched && isDayMatched) return true;
-        }
-        return false;
+        return isIncludeUnavailableCalendarList(simpleCalendarToCalendar(simpleDate));
     }
 
     private static Calendar simpleCalendarToCalendar(SimpleDate simpleDate) {

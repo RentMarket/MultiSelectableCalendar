@@ -4,8 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MultiSelectableCalender.iml" filepath="$PROJECT_DIR$/MultiSelectableCalender.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/multiselectablecalendar/multiselectablecalender.iml" filepath="$PROJECT_DIR$/multiselectablecalendar/multiselectablecalender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/multiselectablecalendar/multiselectablecalendar.iml" filepath="$PROJECT_DIR$/multiselectablecalendar/multiselectablecalendar.iml" />
       <module fileurl="file://$PROJECT_DIR$/multiselectablecalender/multiselectablecalendar.iml" filepath="$PROJECT_DIR$/multiselectablecalender/multiselectablecalendar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/multiselectablecalendar/multiselectablecalender.iml" filepath="$PROJECT_DIR$/multiselectablecalendar/multiselectablecalender.iml" />
     </modules>
   </component>
 </project>
