@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MultiSelectableCalenderView">
+        <attr name="monthBackgroundColor" format="color" />
+        <attr name="monthTextColor" format="color" />
+        <attr name="weekBackgroundColor" format="color" />
+        <attr name="weekTextColor" format="color" />
+        <attr name="dayBackgroundColor" format="color" />
+        <attr name="dayTextColor" format="color" />
+        <attr name="availableDayBackgroundColor" format="color" />
+        <attr name="availableDayTextColor" format="color" />
+        <attr name="unavailableDayTextColor" format="color" />
+    </declare-styleable>
+</resources>
