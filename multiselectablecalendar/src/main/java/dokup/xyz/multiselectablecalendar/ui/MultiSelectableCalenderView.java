@@ -116,8 +116,8 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_dayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
         mAvailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_availableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.available_day_background));
         mAvailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_availableDayTextColor, ContextCompat.getColor(mContext, R.color.white));
-        mUnavailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_availableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.unavailable_day_background));
-        mUnavailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_availableDayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
+        mUnavailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.unavailable_day_background));
+        mUnavailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
     }
 
     private void createViews() {
