@@ -2,7 +2,7 @@ package dokup.xyz.multiselectablecalendar.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.res.TypedArray;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -55,21 +55,46 @@ public class MultiSelectableCalenderView extends LinearLayout {
 
     private Context mContext;
 
+    //attributes
+    private int mMonthBackgroundColor;
+    private int mMonthTextColor;
+    private int mWeekBackgroundColor;
+    private int mWeekTextColor;
+    private int mDayBackgroundColor;
+    private int mDayTextColor;
+    private int mAvailableDayBackgroundColor;
+    private int mAvailableDayTextColor;
+    private int mUnavailableDayTextColor;
+    private int mUnavailableDayBackgroundColor;
+
+
     public MultiSelectableCalenderView(Context context) {
         super(context);
         mContext = context;
+        mMonthBackgroundColor = ContextCompat.getColor(mContext, R.color.default_background_month);
+        mMonthTextColor = ContextCompat.getColor(mContext, R.color.text_color);
+        mWeekBackgroundColor = ContextCompat.getColor(mContext, R.color.white);
+        mWeekTextColor = ContextCompat.getColor(mContext, R.color.text_color);
+        mDayBackgroundColor = ContextCompat.getColor(mContext, R.color.white);
+        mDayTextColor = ContextCompat.getColor(mContext, R.color.text_color);
+        mAvailableDayBackgroundColor = ContextCompat.getColor(mContext, R.color.available_day_background);
+        mAvailableDayTextColor = ContextCompat.getColor(mContext, R.color.white);
+        mUnavailableDayBackgroundColor = ContextCompat.getColor(mContext, R.color.unavailable_day_background);
+        mUnavailableDayTextColor = ContextCompat.getColor(mContext, R.color.text_color);
         createViews();
     }
 
     public MultiSelectableCalenderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
+        setAttributes(attrs);
         createViews();
     }
 
     public MultiSelectableCalenderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
+        setAttributes(attrs);
         createViews();
     }
 
@@ -81,8 +106,18 @@ public class MultiSelectableCalenderView extends LinearLayout {
         setDays(year, month - 1);
     }
 
-    private void showSchedule() {
-        // TODO: Set schedule first
+    private void setAttributes(AttributeSet attrs) {
+        TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.MultiSelectableCalenderView);
+        mMonthBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_monthBackgroundColor, ContextCompat.getColor(mContext, R.color.default_background_month));
+        mMonthTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_monthTextColor, ContextCompat.getColor(mContext, R.color.text_color));
+        mWeekBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_weekBackgroundColor, ContextCompat.getColor(mContext, R.color.white));
+        mWeekTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_weekTextColor, ContextCompat.getColor(mContext, R.color.text_color));
+        mDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_dayBackgroundColor, ContextCompat.getColor(mContext, R.color.white));
+        mDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_dayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
+        mAvailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_availableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.available_day_background));
+        mAvailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_availableDayTextColor, ContextCompat.getColor(mContext, R.color.white));
+        mUnavailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.unavailable_day_background));
+        mUnavailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
     }
 
     private void createViews() {
@@ -102,7 +137,6 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mMonthLayout = new LinearLayout(mContext);
         mMonthLayout.setOrientation(HORIZONTAL);
         mMonthLayout.setGravity(Gravity.CENTER);
-        mMonthLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey_100));
         mMonthLayout.setPadding(0, (int) scaleDensity * 20, 0, (int) scaleDensity * 20);
 
         mPreviousImage = new ImageView(mContext);
@@ -191,6 +225,8 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private void setMonth(int year, int month) {
         Calendar assignedCalender = getAssignedCalendar(year, month);
         SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_YEAR_MONTH);
+        mMonthLayout.setBackgroundColor(mMonthBackgroundColor);
+        mMonthText.setTextColor(mMonthTextColor);
 
         mMonthText.setText(sdf.format(assignedCalender.getTime()));
     }
@@ -206,7 +242,10 @@ public class MultiSelectableCalenderView extends LinearLayout {
 
         for(int i=0; i<COLUMN_SIZE; i++) {
             TextView textView = (TextView) mWeekLayout.getChildAt(i);
+            textView.setBackgroundColor(mWeekBackgroundColor);
+            textView.setTextColor(mWeekTextColor);
             textView.setText(sdf.format(calendar.getTime()));
+
 
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
@@ -233,14 +272,14 @@ public class MultiSelectableCalenderView extends LinearLayout {
                     dayText.setText(" ");
                     dayText.setOnClickListener(null);
                     skipCount--;
-                    dayText.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
+                    dayText.setBackgroundColor(mDayBackgroundColor);
                     continue;
                 }
 
                 if(lastDay < dayCount) {
                     dayText.setText(" ");
                     dayText.setOnClickListener(null);
-                    dayText.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
+                    dayText.setBackgroundColor(mDayBackgroundColor);
                     continue;
                 }
 
@@ -248,14 +287,14 @@ public class MultiSelectableCalenderView extends LinearLayout {
                 dayText.setOnClickListener(mOnDateClickListener);
                 SimpleDate simpleDate = new SimpleDate(mYear, mMonth, dayCount);
                 if(mAvailableSchedule.isIncludeAvailableCalendarList(simpleDate)) {
-                    dayText.setBackgroundColor(Color.parseColor("#174475"));
-                    dayText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                    dayText.setBackgroundColor(mAvailableDayBackgroundColor);
+                    dayText.setTextColor(mAvailableDayTextColor);
                 } else if(mAvailableSchedule.isIncludeUnavailableCalendarList(simpleDate)) {
-                    dayText.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey_300));
-                    dayText.setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
+                    dayText.setBackgroundColor(mUnavailableDayBackgroundColor);
+                    dayText.setTextColor(mUnavailableDayTextColor);
                 } else {
-                    dayText.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
-                    dayText.setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
+                    dayText.setBackgroundColor(mDayBackgroundColor);
+                    dayText.setTextColor(mDayTextColor);
                 }
                 dayCount++;
             }
@@ -287,22 +326,23 @@ public class MultiSelectableCalenderView extends LinearLayout {
         public void onClick(View view) {
             int day = Integer.parseInt(((TextView) view).getText().toString());
             SimpleDate simpleDate = new SimpleDate(mYear, mMonth, day);
+            TextView dayText = (TextView) view;
             if(mAvailableSchedule.isIncludeAvailableCalendarList(simpleDate)) {
                 // When selected day is already available
                 mAvailableSchedule.removeAvailableCalendarList(simpleDate);
                 mAvailableSchedule.addUnavailableCalendarList(simpleDate);
-                view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey_300));
-                ((TextView) view).setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
+                dayText.setBackgroundColor(mUnavailableDayBackgroundColor);
+                dayText.setTextColor(mUnavailableDayTextColor);
             } else if(mAvailableSchedule.isIncludeUnavailableCalendarList(simpleDate)) {
                 // When selected day is already unavailable
                 mAvailableSchedule.removeUnavailableCalendarList(simpleDate);
-                view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
-                ((TextView) view).setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
+                dayText.setBackgroundColor(mDayBackgroundColor);
+                dayText.setTextColor(mDayTextColor);
             } else {
                 // When selected day does not have status
                 mAvailableSchedule.addAvailableCalendarList(simpleDate);
-                view.setBackgroundColor(Color.parseColor("#174475"));
-                ((TextView) view).setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                dayText.setBackgroundColor(mAvailableDayBackgroundColor);
+                dayText.setTextColor(mAvailableDayTextColor);
             }
         }
     };
