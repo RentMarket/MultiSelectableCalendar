@@ -24,5 +24,6 @@
         app:availableDayBackgroundColor="#FF9800"
         app:availableDayTextColor="#FFFFFF"
         app:unavailableDayBackgroundColor="#757575"
-        app:unavailableDayTextColor="#FFFFFF"/>
+        app:unavailableDayTextColor="#FFFFFF"
+        app:chevronColor="#1565C0"/>
 </RelativeLayout>

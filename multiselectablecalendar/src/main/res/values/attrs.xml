@@ -11,5 +11,6 @@
         <attr name="availableDayTextColor" format="color" />
         <attr name="unavailableDayBackgroundColor" format="color" />
         <attr name="unavailableDayTextColor" format="color" />
+        <attr name="chevronColor" format="color" />
     </declare-styleable>
 </resources>
