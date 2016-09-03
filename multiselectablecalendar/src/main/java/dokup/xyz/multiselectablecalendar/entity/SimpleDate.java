@@ -1,5 +1,7 @@
 package dokup.xyz.multiselectablecalendar.entity;
 
+import java.util.Calendar;
+
 /**
  * Created by e10dokup on 2016/08/27
  **/
@@ -39,5 +41,11 @@ public class SimpleDate {
 
     public void setDay(int day) {
         mDay = day;
+    }
+
+    public static Calendar simpleDateToCalendar(SimpleDate simpleDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(simpleDate.getYear(), simpleDate.getMonth(), simpleDate.getDay());
+        return calendar;
     }
 }

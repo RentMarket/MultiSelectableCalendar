@@ -21,6 +21,7 @@ import java.util.Calendar;
 import dokup.xyz.multiselectablecalendar.R;
 import dokup.xyz.multiselectablecalendar.entity.AvailableSchedule;
 import dokup.xyz.multiselectablecalendar.entity.SimpleDate;
+import dokup.xyz.multiselectablecalendar.util.ScheduleMode;
 
 /**
  * Created by e10dokup on 2016/08/26
@@ -71,6 +72,12 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private int mUnavailableDayBackgroundColor;
     private int mChevronColor;
 
+    private ScheduleMode mMode = ScheduleMode.RANGE;
+    private int mInterval = 3;
+
+    private SimpleDate mFirstSelectedDate;
+    private SimpleDate mSecondSelectedDate;
+
 
     public MultiSelectableCalenderView(Context context) {
         super(context);
@@ -103,12 +110,24 @@ public class MultiSelectableCalenderView extends LinearLayout {
         createViews();
     }
 
+    public void setMode(ScheduleMode mode) {
+        mMode = mode;
+    }
+
+    public int getInterval() {
+        return mInterval;
+    }
+
+    public void setInterval(int interval) {
+        mInterval = interval;
+    }
+
     public void set(int year, int month) {
         mYear = year;
         mMonth = month;
-        setMonth(year, month - 1);
+        setMonth(year, mMonth);
         setWeekDays();
-        setDays(year, month - 1);
+        setDays(year, mMonth);
     }
 
     private void setAttributes(AttributeSet attrs) {
@@ -336,34 +355,83 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private OnClickListener mOnDateClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            int day = Integer.parseInt(((TextView) view).getText().toString());
-            SimpleDate simpleDate = new SimpleDate(mYear, mMonth, day);
-            TextView dayText = (TextView) view;
-            if(mAvailableSchedule.isIncludeAvailableCalendarList(simpleDate)) {
-                // When selected day is already available
-                mAvailableSchedule.removeAvailableCalendarList(simpleDate);
-                mAvailableSchedule.addUnavailableCalendarList(simpleDate);
-                dayText.setBackgroundColor(mUnavailableDayBackgroundColor);
-                dayText.setTextColor(mUnavailableDayTextColor);
-            } else if(mAvailableSchedule.isIncludeUnavailableCalendarList(simpleDate)) {
-                // When selected day is already unavailable
-                mAvailableSchedule.removeUnavailableCalendarList(simpleDate);
-                dayText.setBackgroundColor(mDayBackgroundColor);
-                dayText.setTextColor(mDayTextColor);
-            } else {
-                // When selected day does not have status
-                mAvailableSchedule.addAvailableCalendarList(simpleDate);
-                dayText.setBackgroundColor(mAvailableDayBackgroundColor);
-                dayText.setTextColor(mAvailableDayTextColor);
+            if(mMode == ScheduleMode.SINGLE) {
+                onClickAtSingleMode(view);
+            } else if(mMode == ScheduleMode.RANGE) {
+                onClickAsRangeMode(view);
             }
         }
     };
 
+    private void onClickAtSingleMode(View view) {
+        TextView dayText = (TextView) view;
+        SimpleDate simpleDate = new SimpleDate(mYear, mMonth, Integer.parseInt(dayText.getText().toString()));
+        if(mAvailableSchedule.isIncludeAvailableCalendarList(simpleDate)) {
+            // When selected day is already available
+            mAvailableSchedule.removeAvailableCalendarList(simpleDate);
+            mAvailableSchedule.addUnavailableCalendarList(simpleDate);
+            dayText.setBackgroundColor(mUnavailableDayBackgroundColor);
+            dayText.setTextColor(mUnavailableDayTextColor);
+        } else if(mAvailableSchedule.isIncludeUnavailableCalendarList(simpleDate)) {
+            // When selected day is already unavailable
+            mAvailableSchedule.removeUnavailableCalendarList(simpleDate);
+            dayText.setBackgroundColor(mDayBackgroundColor);
+            dayText.setTextColor(mDayTextColor);
+        } else {
+            // When selected day does not have status
+            mAvailableSchedule.addAvailableCalendarList(simpleDate);
+            dayText.setBackgroundColor(mAvailableDayBackgroundColor);
+            dayText.setTextColor(mAvailableDayTextColor);
+        }
+    }
+
+    private void onClickAsRangeMode(View view) {
+        TextView dayText = (TextView) view;
+        SimpleDate simpleDate = new SimpleDate(mYear, mMonth, Integer.parseInt(dayText.getText().toString()));
+        if(mFirstSelectedDate == null) {
+            mAvailableSchedule.clearSchedule();
+            set(mYear, mMonth);
+            mFirstSelectedDate = simpleDate;
+            dayText.setTextColor(mAvailableDayBackgroundColor);
+        } else {
+            mSecondSelectedDate = simpleDate;
+            selectDaysByyRange();
+            set(mYear, mMonth);
+        }
+    }
+
+    private void selectDaysByyRange() {
+        Calendar firstCalendar = SimpleDate.simpleDateToCalendar(mFirstSelectedDate);
+        Calendar secondCalendar = SimpleDate.simpleDateToCalendar(mSecondSelectedDate);
+        mFirstSelectedDate = null;
+        mSecondSelectedDate = null;
+        int diff = firstCalendar.compareTo(secondCalendar);
+        if(diff == 0) {
+            return;
+        } else if(diff > 0) {
+            Calendar tmp = firstCalendar;
+            firstCalendar = secondCalendar;
+            secondCalendar = tmp;
+        }
+        int days = (int)((secondCalendar.getTimeInMillis() - firstCalendar.getTimeInMillis()) / (1000 * 60 * 60 * 24)) + 1;
+        Calendar calendar = (Calendar) firstCalendar.clone();
+        for(int i=0; i<days; i++) {
+            mAvailableSchedule.addAvailableCalendarList((Calendar) calendar.clone());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        for(int i=0; i<mInterval; i++) {
+            firstCalendar.add(Calendar.DAY_OF_MONTH, -1);
+            secondCalendar.add(Calendar.DAY_OF_MONTH, 1);
+            mAvailableSchedule.addUnavailableCalendarList((Calendar) firstCalendar.clone());
+            mAvailableSchedule.addUnavailableCalendarList((Calendar) secondCalendar.clone());
+        }
+    }
+
     private OnClickListener mOnPreviousClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(mMonth == 1) {
-                set(mYear - 1, 12);
+            if(mMonth == 0) {
+                set(mYear - 1, 11);
             } else {
                 set(mYear, mMonth - 1);
             }
@@ -373,8 +441,8 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private OnClickListener mOnNextClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(mMonth == 12) {
-                set(mYear + 1, 1);
+            if(mMonth == 11) {
+                set(mYear + 1, 0);
             } else {
                 set(mYear, mMonth + 1);
             }
