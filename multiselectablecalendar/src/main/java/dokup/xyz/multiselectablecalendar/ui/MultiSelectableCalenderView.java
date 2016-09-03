@@ -3,7 +3,10 @@ package dokup.xyz.multiselectablecalendar.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -66,6 +69,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private int mAvailableDayTextColor;
     private int mUnavailableDayTextColor;
     private int mUnavailableDayBackgroundColor;
+    private int mChevronColor;
 
 
     public MultiSelectableCalenderView(Context context) {
@@ -81,6 +85,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mAvailableDayTextColor = ContextCompat.getColor(mContext, R.color.white);
         mUnavailableDayBackgroundColor = ContextCompat.getColor(mContext, R.color.unavailable_day_background);
         mUnavailableDayTextColor = ContextCompat.getColor(mContext, R.color.text_color);
+        mChevronColor = ContextCompat.getColor(mContext, R.color.text_color);
         createViews();
     }
 
@@ -118,6 +123,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mAvailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_availableDayTextColor, ContextCompat.getColor(mContext, R.color.white));
         mUnavailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.unavailable_day_background));
         mUnavailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
+        mChevronColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_chevronColor, ContextCompat.getColor(mContext, R.color.text_color));
     }
 
     private void createViews() {
@@ -140,7 +146,10 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mMonthLayout.setPadding(0, (int) scaleDensity * 20, 0, (int) scaleDensity * 20);
 
         mPreviousImage = new ImageView(mContext);
-        mPreviousImage.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.lib_ic_chevron_left_grey_500_24dp));
+        Drawable leftChevron = ContextCompat.getDrawable(mContext, R.drawable.lib_ic_chevron_left_grey_500_24dp);
+        DrawableCompat.setTint(leftChevron, mChevronColor);
+        DrawableCompat.setTintMode(leftChevron, PorterDuff.Mode.SRC_IN);
+        mPreviousImage.setImageDrawable(leftChevron);
         mPreviousImage.setPadding((int) scaleDensity * 10, 0, (int) scaleDensity * 10, 0);
         mPreviousImage.setOnClickListener(mOnPreviousClickListener);
         mMonthLayout.addView(mPreviousImage, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -153,7 +162,10 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mMonthLayout.addView(mMonthText, layoutParams);
 
         mNextImage = new ImageView(mContext);
-        mNextImage.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.lib_ic_chevron_right_grey_500_24dp));
+        Drawable rightChevron = ContextCompat.getDrawable(mContext, R.drawable.lib_ic_chevron_right_grey_500_24dp);
+        DrawableCompat.setTint(rightChevron, mChevronColor);
+        DrawableCompat.setTintMode(rightChevron, PorterDuff.Mode.SRC_IN);
+        mNextImage.setImageDrawable(rightChevron);
         mNextImage.setPadding((int) scaleDensity * 10, 0, (int) scaleDensity * 10, 0);
         mNextImage.setOnClickListener(mOnNextClickListener);
         mMonthLayout.addView(mNextImage, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
