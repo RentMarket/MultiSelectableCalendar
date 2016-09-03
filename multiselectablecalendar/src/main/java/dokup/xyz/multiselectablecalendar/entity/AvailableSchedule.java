@@ -31,19 +31,25 @@ public class AvailableSchedule {
     }
 
     public void addAvailableCalendarList(Calendar calendar) {
+        if(isIncludeAvailableCalendarList(calendar)) {
+            return;
+        }
         mAvailableCalendarList.add(calendar);
     }
 
     public void addAvailableCalendarList(SimpleDate simpleDate) {
-        addAvailableCalendarList(simpleCalendarToCalendar(simpleDate));
+        addAvailableCalendarList(SimpleDate.simpleDateToCalendar(simpleDate));
     }
 
     public void addUnavailableCalendarList(Calendar calendar) {
+        if(isIncludeUnavailableCalendarList(calendar)) {
+            return;
+        }
         mUnavailableCalendarList.add(calendar);
     }
 
     public void addUnavailableCalendarList(SimpleDate simpleDate) {
-        addUnavailableCalendarList(simpleCalendarToCalendar(simpleDate));
+        addUnavailableCalendarList(SimpleDate.simpleDateToCalendar(simpleDate));
     }
 
     public boolean removeAvailableCalendarList(Calendar calendar) {
@@ -57,7 +63,7 @@ public class AvailableSchedule {
     }
 
     public boolean removeAvailableCalendarList(SimpleDate simpleDate) {
-        return removeAvailableCalendarList(simpleCalendarToCalendar(simpleDate));
+        return removeAvailableCalendarList(SimpleDate.simpleDateToCalendar(simpleDate));
     }
 
     public boolean removeUnavailableCalendarList(Calendar calendar) {
@@ -71,7 +77,7 @@ public class AvailableSchedule {
     }
 
     public boolean removeUnavailableCalendarList(SimpleDate simpleDate) {
-        return removeUnavailableCalendarList(simpleCalendarToCalendar(simpleDate));
+        return removeUnavailableCalendarList(SimpleDate.simpleDateToCalendar(simpleDate));
     }
 
     public boolean isIncludeAvailableCalendarList(Calendar calendar) {
@@ -85,7 +91,7 @@ public class AvailableSchedule {
     }
 
     public boolean isIncludeAvailableCalendarList(SimpleDate simpleDate) {
-        return isIncludeAvailableCalendarList(simpleCalendarToCalendar(simpleDate));
+        return isIncludeAvailableCalendarList(SimpleDate.simpleDateToCalendar(simpleDate));
     }
 
     public boolean isIncludeUnavailableCalendarList(Calendar calendar) {
@@ -99,12 +105,12 @@ public class AvailableSchedule {
     }
 
     public boolean isIncludeUnavailableCalendarList(SimpleDate simpleDate) {
-        return isIncludeUnavailableCalendarList(simpleCalendarToCalendar(simpleDate));
+        return isIncludeUnavailableCalendarList(SimpleDate.simpleDateToCalendar(simpleDate));
     }
 
-    private static Calendar simpleCalendarToCalendar(SimpleDate simpleDate) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(simpleDate.getYear(), simpleDate.getMonth(), simpleDate.getDay());
-        return calendar;
+    public void clearSchedule() {
+        mAvailableCalendarList.clear();
+        mUnavailableCalendarList.clear();
     }
+
 }
