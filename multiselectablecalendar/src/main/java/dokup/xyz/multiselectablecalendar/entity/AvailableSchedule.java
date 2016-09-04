@@ -31,7 +31,7 @@ public class AvailableSchedule {
     }
 
     public void addAvailableCalendarList(Calendar calendar) {
-        if(isIncludeAvailableCalendarList(calendar)) {
+        if(isIncludeAvailableCalendarList(calendar) || isIncludeUnavailableCalendarList(calendar)) {
             return;
         }
         mAvailableCalendarList.add(calendar);
@@ -42,7 +42,7 @@ public class AvailableSchedule {
     }
 
     public void addUnavailableCalendarList(Calendar calendar) {
-        if(isIncludeUnavailableCalendarList(calendar)) {
+        if(isIncludeAvailableCalendarList(calendar) || isIncludeUnavailableCalendarList(calendar)) {
             return;
         }
         mUnavailableCalendarList.add(calendar);

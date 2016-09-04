@@ -14,7 +14,6 @@ public class SimpleDate {
     private int mDay;
 
     public SimpleDate(int year, int month, int day) {
-
         mYear = year;
         mMonth = month;
         mDay = day;
