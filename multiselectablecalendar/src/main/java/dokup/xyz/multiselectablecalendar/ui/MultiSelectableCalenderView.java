@@ -122,6 +122,14 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mInterval = interval;
     }
 
+    public AvailableSchedule getAvailableSchedule() {
+        return mAvailableSchedule;
+    }
+
+    public void setAvailableSchedule(AvailableSchedule availableSchedule) {
+        mAvailableSchedule = availableSchedule;
+    }
+
     public void set(int year, int month) {
         mYear = year;
         mMonth = month;
@@ -143,6 +151,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mUnavailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.unavailable_day_background));
         mUnavailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
         mChevronColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_chevronColor, ContextCompat.getColor(mContext, R.color.text_color));
+        typedArray.recycle();
     }
 
     private void createViews() {
@@ -352,17 +361,6 @@ public class MultiSelectableCalenderView extends LinearLayout {
         return mBeginningDayOfWeek > firstDayOfWeekOfMonth ? firstDayOfWeekOfMonth - mBeginningDayOfWeek + COLUMN_SIZE : firstDayOfWeekOfMonth - mBeginningDayOfWeek;
     }
 
-    private OnClickListener mOnDateClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if(mMode == ScheduleMode.SINGLE) {
-                onClickAtSingleMode(view);
-            } else if(mMode == ScheduleMode.RANGE) {
-                onClickAsRangeMode(view);
-            }
-        }
-    };
-
     private void onClickAtSingleMode(View view) {
         TextView dayText = (TextView) view;
         SimpleDate simpleDate = new SimpleDate(mYear, mMonth, Integer.parseInt(dayText.getText().toString()));
@@ -426,6 +424,17 @@ public class MultiSelectableCalenderView extends LinearLayout {
             mAvailableSchedule.addUnavailableCalendarList((Calendar) secondCalendar.clone());
         }
     }
+
+    private OnClickListener mOnDateClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(mMode == ScheduleMode.SINGLE) {
+                onClickAtSingleMode(view);
+            } else if(mMode == ScheduleMode.RANGE) {
+                onClickAsRangeMode(view);
+            }
+        }
+    };
 
     private OnClickListener mOnPreviousClickListener = new OnClickListener() {
         @Override
