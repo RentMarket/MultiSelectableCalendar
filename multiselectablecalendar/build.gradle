@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 
 def versionMajor = 0
@@ -6,8 +7,8 @@ def versionMinor = 1
 def versionPatch = 0
 def versionBuild = 0
 
-def sdkVersionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch * 10 + versionBuild
-def sdkVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+def libVersionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch * 10 + versionBuild
+def libVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -16,8 +17,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode sdkVersionCode
-        versionName sdkVersionName
+        versionCode libVersionCode
+        versionName libVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     packagingOptions {
@@ -35,6 +36,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+publish {
+    userOrg = 'e10dokup'
+    groupId = 'xyz.dokup'
+    artifactId = 'multiselectablecalendar'
+    publishVersion = libVersionName
+    desc = 'Multi state holding calendar'
+    website = 'https://github.com/e10dokup/MultiSelecableCalendar'
 }
 
 dependencies {
