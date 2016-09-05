@@ -40,7 +40,7 @@ android {
 
 publish {
     userOrg = 'e10dokup'
-    groupId = 'xyz.dokup'
+    groupId = 'xyz.dokup.multiselectablecalendar'
     artifactId = 'multiselectablecalendar'
     publishVersion = libVersionName
     desc = 'Multi state holding calendar'
