@@ -393,12 +393,12 @@ public class MultiSelectableCalenderView extends LinearLayout {
             dayText.setTextColor(mAvailableDayBackgroundColor);
         } else {
             mSecondSelectedDate = simpleDate;
-            selectDaysByyRange();
+            selectDaysByRange();
             set(mYear, mMonth);
         }
     }
 
-    private void selectDaysByyRange() {
+    private void selectDaysByRange() {
         Calendar firstCalendar = SimpleDate.simpleDateToCalendar(mFirstSelectedDate);
         Calendar secondCalendar = SimpleDate.simpleDateToCalendar(mSecondSelectedDate);
         mFirstSelectedDate = null;
@@ -432,6 +432,8 @@ public class MultiSelectableCalenderView extends LinearLayout {
                 onClickAtSingleMode(view);
             } else if(mMode == ScheduleMode.RANGE) {
                 onClickAsRangeMode(view);
+            } else if(mMode == ScheduleMode.DISPLAY) {
+                return;
             }
         }
     };
