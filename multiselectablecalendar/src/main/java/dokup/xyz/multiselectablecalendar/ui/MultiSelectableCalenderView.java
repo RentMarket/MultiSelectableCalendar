@@ -21,6 +21,7 @@ import java.util.Calendar;
 import dokup.xyz.multiselectablecalendar.R;
 import dokup.xyz.multiselectablecalendar.entity.AvailableSchedule;
 import dokup.xyz.multiselectablecalendar.entity.SimpleDate;
+import dokup.xyz.multiselectablecalendar.listener.OnScheduleChangedListener;
 import dokup.xyz.multiselectablecalendar.util.ScheduleMode;
 
 /**
@@ -78,6 +79,8 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private SimpleDate mFirstSelectedDate;
     private SimpleDate mSecondSelectedDate;
 
+    private OnScheduleChangedListener mListener;
+
 
     public MultiSelectableCalenderView(Context context) {
         super(context);
@@ -128,6 +131,10 @@ public class MultiSelectableCalenderView extends LinearLayout {
 
     public void setAvailableSchedule(AvailableSchedule availableSchedule) {
         mAvailableSchedule = availableSchedule;
+    }
+
+    public void setOnScheduleChangedListener(OnScheduleChangedListener listener) {
+        mListener = listener;
     }
 
     public void set(int year, int month) {
@@ -381,6 +388,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
             dayText.setBackgroundColor(mAvailableDayBackgroundColor);
             dayText.setTextColor(mAvailableDayTextColor);
         }
+        callListener();
     }
 
     private void onClickAsRangeMode(View view) {
@@ -393,12 +401,12 @@ public class MultiSelectableCalenderView extends LinearLayout {
             dayText.setTextColor(mAvailableDayBackgroundColor);
         } else {
             mSecondSelectedDate = simpleDate;
-            selectDaysByyRange();
+            selectDaysByRange();
             set(mYear, mMonth);
         }
     }
 
-    private void selectDaysByyRange() {
+    private void selectDaysByRange() {
         Calendar firstCalendar = SimpleDate.simpleDateToCalendar(mFirstSelectedDate);
         Calendar secondCalendar = SimpleDate.simpleDateToCalendar(mSecondSelectedDate);
         mFirstSelectedDate = null;
@@ -423,6 +431,13 @@ public class MultiSelectableCalenderView extends LinearLayout {
             mAvailableSchedule.addUnavailableCalendarList((Calendar) firstCalendar.clone());
             mAvailableSchedule.addUnavailableCalendarList((Calendar) secondCalendar.clone());
         }
+        callListener();
+    }
+
+    private void callListener() {
+        if(mListener != null) {
+            mListener.onScheduleChanged(mAvailableSchedule.getAvailableCalendarList(), mAvailableSchedule.getUnavailableCalendarList());
+        }
     }
 
     private OnClickListener mOnDateClickListener = new OnClickListener() {
@@ -432,6 +447,8 @@ public class MultiSelectableCalenderView extends LinearLayout {
                 onClickAtSingleMode(view);
             } else if(mMode == ScheduleMode.RANGE) {
                 onClickAsRangeMode(view);
+            } else if(mMode == ScheduleMode.DISPLAY) {
+                return;
             }
         }
     };
