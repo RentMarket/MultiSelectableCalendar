@@ -2,7 +2,10 @@ package dokup.xyz.multiselectablecalendar.entity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+
+import dokup.xyz.multiselectablecalendar.comparator.CalendarComparator;
 
 /**
  * Created by e10dokup on 2016/08/27
@@ -15,6 +18,7 @@ public class AvailableSchedule {
     private List<Calendar> mUnavailableCalendarList = new ArrayList<>();
 
     public List<Calendar> getAvailableCalendarList() {
+        Collections.sort(mAvailableCalendarList, new CalendarComparator());
         return mAvailableCalendarList;
     }
 
@@ -23,6 +27,7 @@ public class AvailableSchedule {
     }
 
     public List<Calendar> getUnavailableCalendarList() {
+        Collections.sort(mUnavailableCalendarList, new CalendarComparator());
         return mUnavailableCalendarList;
     }
 
