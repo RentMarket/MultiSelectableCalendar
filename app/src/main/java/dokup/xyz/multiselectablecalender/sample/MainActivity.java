@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.Calendar;
 
+import dokup.xyz.multiselectablecalendar.entity.AvailableSchedule;
 import dokup.xyz.multiselectablecalendar.ui.MultiSelectableCalenderView;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
 
         MultiSelectableCalenderView calenderView = (MultiSelectableCalenderView) findViewById(R.id.calender);
         Calendar calendar = Calendar.getInstance();
+        AvailableSchedule schedule = new AvailableSchedule();
+        schedule.addUnavailableCalendarList(calendar);
+        calenderView.setAvailableSchedule(schedule);
         calenderView.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
     }
 }
