@@ -73,8 +73,8 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private int mUnavailableDayBackgroundColor;
     private int mChevronColor;
 
-    private ScheduleMode mMode = ScheduleMode.RANGE;
-    private int mInterval = 3;
+    private ScheduleMode mMode = ScheduleMode.SINGLE;
+    private int mInterval = 0;
 
     private SimpleDate mFirstSelectedDate;
     private SimpleDate mSecondSelectedDate;
@@ -412,9 +412,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mFirstSelectedDate = null;
         mSecondSelectedDate = null;
         int diff = firstCalendar.compareTo(secondCalendar);
-        if(diff == 0) {
-            return;
-        } else if(diff > 0) {
+        if(diff > 0) {
             Calendar tmp = firstCalendar;
             firstCalendar = secondCalendar;
             secondCalendar = tmp;
