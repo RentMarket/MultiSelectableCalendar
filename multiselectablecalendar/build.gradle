@@ -1,14 +1,19 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+
+def siteUrl = 'https://github.com/e10dokup/MultiSelecableCalendar'
+def gitUrl = 'https://github.com/e10dokup/MultiSelecableCalendar.git'
 
 
 def versionMajor = 0
 def versionMinor = 2
-def versionPatch = 2
+def versionPatch = 3
 def versionBuild = 0
 
 def libVersionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch * 10 + versionBuild
 def libVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+group = 'xyz.dokup.multiselectablecalendar'
+version = libVersionName
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -38,13 +43,55 @@ android {
     }
 }
 
-publish {
-    userOrg = 'e10dokup'
-    groupId = 'xyz.dokup.multiselectablecalendar'
-    artifactId = 'multiselectablecalendar'
-    publishVersion = libVersionName
-    desc = 'Multi state holding calendar'
-    website = 'https://github.com/e10dokup/MultiSelecableCalendar'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+bintray {
+    user = bintray_user
+    key = bintray_api_key
+
+    configurations = ['archives'] //When uploading configuration files
+    pkg {
+        repo = 'maven'
+        name = 'multiselectablecalendar'
+        desc = 'Multi state holding calendar'
+        websiteUrl = siteUrl
+        issueTrackerUrl = 'https://github.com/e10dokup/MultiSelecableCalendar/issues'
+        vcsUrl = gitUrl
+        licenses = ['Apache-2.0']
+        labels = ['android']
+        publicDownloadNumbers = true
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name 'multiselectablecalendar'
+                url siteUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'e10dokup'
+                        name 'Yoshihiro Wada'
+                        email 'wada@dokup.xyz'
+                    }
+                }
+                scm {
+                    connection 'https://github.com/e10dokup/MultiSelecableCalendar.git'
+                    developerConnection 'https://github.com/e10dokup/MultiSelecableCalendar.git'
+                    url siteUrl
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -56,4 +103,27 @@ dependencies {
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.squareup.assertj:assertj-android:1.1.1'
 
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+task findConventions << {
+    println project.getConvention()
 }
