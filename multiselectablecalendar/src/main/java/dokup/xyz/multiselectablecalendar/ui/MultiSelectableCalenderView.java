@@ -225,7 +225,6 @@ public class MultiSelectableCalenderView extends LinearLayout {
         for(int i=0; i<COLUMN_SIZE; i++) {
             TextView weekText = new TextView(mContext);
             weekText.setGravity(Gravity.CENTER);
-            weekText.setTextSize((int) scaleDensity * 8);
             weekText.setPadding(0, (int) scaleDensity * 8, 0, (int) scaleDensity * 8);
             LayoutParams layoutParams = new LayoutParams(0, LayoutParams.WRAP_CONTENT);
             layoutParams.weight = 1;
@@ -255,7 +254,6 @@ public class MultiSelectableCalenderView extends LinearLayout {
             for(int j=0; j<COLUMN_SIZE; j++) {
                 TextView dayText = new TextView(mContext);
                 dayText.setGravity(Gravity.CENTER);
-                dayText.setTextSize((int) scaleDensity * 9);
                 int padding = (int)(scaleDensity * 2);
                 dayText.setPadding(padding, padding, padding, padding);
                 LayoutParams layoutParams = new LayoutParams(0, (int)(scaleDensity * 48));
@@ -323,20 +321,42 @@ public class MultiSelectableCalenderView extends LinearLayout {
                 TextView dayText = (TextView) weekLayout.getChildAt(j);
 
                 if(i==0 && skipCount > 0) {
-                    dayText.setText(String.valueOf(previousMonthDayCount - skipCount + 1));
+                    int d = previousMonthDayCount - skipCount + 1;
+                    dayText.setText(String.valueOf(d));
                     dayText.setOnClickListener(null);
                     skipCount--;
-                    dayText.setBackgroundColor(mDayBackgroundColor);
-                    dayText.setTextColor(mOtherMonthDayTextColor);
+
+                    SimpleDate simpleDate = new SimpleDate(mYear, mMonth - 1, d);
+                    if(mAvailableSchedule.isIncludeAvailableCalendarList(simpleDate)) {
+                        dayText.setBackgroundColor(mAvailableDayBackgroundColor);
+                        dayText.setTextColor(mAvailableDayTextColor);
+                    } else if(mAvailableSchedule.isIncludeUnavailableCalendarList(simpleDate)) {
+                        dayText.setBackgroundColor(mUnavailableDayBackgroundColor);
+                        dayText.setTextColor(mUnavailableDayTextColor);
+                    } else {
+                        dayText.setBackgroundColor(mDayBackgroundColor);
+                        dayText.setTextColor(mOtherMonthDayTextColor);
+                    }
                     continue;
                 }
 
                 if(lastDay < dayCount) {
-                    dayText.setText(String.valueOf(nextMonthDayCount));
+                    int d = nextMonthDayCount;
+                    dayText.setText(String.valueOf(d));
                     nextMonthDayCount++;
                     dayText.setOnClickListener(null);
-                    dayText.setBackgroundColor(mDayBackgroundColor);
-                    dayText.setTextColor(mOtherMonthDayTextColor);
+
+                    SimpleDate simpleDate = new SimpleDate(mYear, mMonth + 1, d);
+                    if(mAvailableSchedule.isIncludeAvailableCalendarList(simpleDate)) {
+                        dayText.setBackgroundColor(mAvailableDayBackgroundColor);
+                        dayText.setTextColor(mAvailableDayTextColor);
+                    } else if(mAvailableSchedule.isIncludeUnavailableCalendarList(simpleDate)) {
+                        dayText.setBackgroundColor(mUnavailableDayBackgroundColor);
+                        dayText.setTextColor(mUnavailableDayTextColor);
+                    } else {
+                        dayText.setBackgroundColor(mDayBackgroundColor);
+                        dayText.setTextColor(mOtherMonthDayTextColor);
+                    }
                     continue;
                 }
 
