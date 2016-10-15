@@ -71,6 +71,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private int mAvailableDayTextColor;
     private int mUnavailableDayTextColor;
     private int mUnavailableDayBackgroundColor;
+    private int mOtherMonthDayTextColor;
     private int mChevronColor;
 
     private ScheduleMode mMode = ScheduleMode.SINGLE;
@@ -95,6 +96,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mAvailableDayTextColor = ContextCompat.getColor(mContext, R.color.white);
         mUnavailableDayBackgroundColor = ContextCompat.getColor(mContext, R.color.unavailable_day_background);
         mUnavailableDayTextColor = ContextCompat.getColor(mContext, R.color.text_color);
+        mOtherMonthDayTextColor = ContextCompat.getColor(mContext, R.color.grey);
         mChevronColor = ContextCompat.getColor(mContext, R.color.text_color);
         createViews();
     }
@@ -157,6 +159,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mAvailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_availableDayTextColor, ContextCompat.getColor(mContext, R.color.white));
         mUnavailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.unavailable_day_background));
         mUnavailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
+        mOtherMonthDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_otherMonthDayTextColor, ContextCompat.getColor(mContext, R.color.grey));
         mChevronColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_chevronColor, ContextCompat.getColor(mContext, R.color.text_color));
         typedArray.recycle();
     }
@@ -191,7 +194,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
 
         mMonthText = new TextView(mContext);
         mMonthText.setGravity(Gravity.CENTER_HORIZONTAL);
-        mMonthText.setTextSize((int) scaleDensity * 5);
+        mMonthText.setTextSize((int) scaleDensity * 10);
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         layoutParams.weight = 1;
         mMonthLayout.addView(mMonthText, layoutParams);
@@ -222,7 +225,8 @@ public class MultiSelectableCalenderView extends LinearLayout {
         for(int i=0; i<COLUMN_SIZE; i++) {
             TextView weekText = new TextView(mContext);
             weekText.setGravity(Gravity.CENTER);
-            weekText.setPadding(0, (int) scaleDensity * 5, 0, (int) scaleDensity * 5);
+            weekText.setTextSize((int) scaleDensity * 8);
+            weekText.setPadding(0, (int) scaleDensity * 8, 0, (int) scaleDensity * 8);
             LayoutParams layoutParams = new LayoutParams(0, LayoutParams.WRAP_CONTENT);
             layoutParams.weight = 1;
             weekText.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
@@ -251,6 +255,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
             for(int j=0; j<COLUMN_SIZE; j++) {
                 TextView dayText = new TextView(mContext);
                 dayText.setGravity(Gravity.CENTER);
+                dayText.setTextSize((int) scaleDensity * 9);
                 int padding = (int)(scaleDensity * 2);
                 dayText.setPadding(padding, padding, padding, padding);
                 LayoutParams layoutParams = new LayoutParams(0, (int)(scaleDensity * 48));
@@ -309,6 +314,8 @@ public class MultiSelectableCalenderView extends LinearLayout {
         int skipCount = getSkipCount(assignedCalendar);
         int lastDay = assignedCalendar.getActualMaximum(Calendar.DATE);
         int dayCount = 1;
+        int previousMonthDayCount = getAssignedCalendar(year, month - 1).getActualMaximum(Calendar.DATE);
+        int nextMonthDayCount = getAssignedCalendar(year, month + 1).getActualMinimum(Calendar.DATE);
 
         for(int i=0; i<ROW_SIZE; i++) {
             LinearLayout weekLayout = mWeekLayoutList.get(i);
@@ -316,17 +323,20 @@ public class MultiSelectableCalenderView extends LinearLayout {
                 TextView dayText = (TextView) weekLayout.getChildAt(j);
 
                 if(i==0 && skipCount > 0) {
-                    dayText.setText(" ");
+                    dayText.setText(String.valueOf(previousMonthDayCount - skipCount + 1));
                     dayText.setOnClickListener(null);
                     skipCount--;
                     dayText.setBackgroundColor(mDayBackgroundColor);
+                    dayText.setTextColor(mOtherMonthDayTextColor);
                     continue;
                 }
 
                 if(lastDay < dayCount) {
-                    dayText.setText(" ");
+                    dayText.setText(String.valueOf(nextMonthDayCount));
+                    nextMonthDayCount++;
                     dayText.setOnClickListener(null);
                     dayText.setBackgroundColor(mDayBackgroundColor);
+                    dayText.setTextColor(mOtherMonthDayTextColor);
                     continue;
                 }
 
