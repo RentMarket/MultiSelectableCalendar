@@ -55,6 +55,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
 
     private int mYear;
     private int mMonth;
+    private String mYearMonthFormat = FORMAT_YEAR_MONTH;
 
     private AvailableSchedule mAvailableSchedule = new AvailableSchedule();
 
@@ -113,6 +114,14 @@ public class MultiSelectableCalenderView extends LinearLayout {
         mContext = context;
         setAttributes(attrs);
         createViews();
+    }
+
+    /**
+     * Set year and month format on calendar top view.
+     * @param yearMonthFormat
+     */
+    public void setYearMonthFormat(String yearMonthFormat) {
+        mYearMonthFormat = yearMonthFormat;
     }
 
     public void setMode(ScheduleMode mode) {
