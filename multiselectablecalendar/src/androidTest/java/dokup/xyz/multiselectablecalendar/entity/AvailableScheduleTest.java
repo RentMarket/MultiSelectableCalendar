@@ -2,10 +2,6 @@ package dokup.xyz.multiselectablecalendar.entity;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AvailableScheduleTest {
@@ -154,56 +150,6 @@ public class AvailableScheduleTest {
         mAvailableSchedule.clearSchedule();
         assertThat(mAvailableSchedule.getAvailableCalendarList().size()).isEqualTo(0);
         assertThat(mAvailableSchedule.getUnavailableCalendarList().size()).isEqualTo(0);
-    }
-
-    @Test
-    public void doSortAvailableCalendarList() {
-        mAvailableSchedule = new AvailableSchedule();
-        SimpleDate d0 = new SimpleDate(2016, 0, 1);
-        SimpleDate d1 = new SimpleDate(2015, 11, 1);
-        SimpleDate d2 = new SimpleDate(2016, 1, 23);
-        SimpleDate d3 = new SimpleDate(2016, 2, 12);
-        SimpleDate d4 = new SimpleDate(2016, 1, 5);
-        mAvailableSchedule.addAvailableCalendarList(d0);
-        mAvailableSchedule.addAvailableCalendarList(d1);
-        mAvailableSchedule.addAvailableCalendarList(d2);
-        mAvailableSchedule.addAvailableCalendarList(d3);
-        mAvailableSchedule.addAvailableCalendarList(d4);
-        List<Calendar> expected = new ArrayList<>();
-        expected.add(SimpleDate.simpleDateToCalendar(d1));
-        expected.add(SimpleDate.simpleDateToCalendar(d0));
-        expected.add(SimpleDate.simpleDateToCalendar(d4));
-        expected.add(SimpleDate.simpleDateToCalendar(d2));
-        expected.add(SimpleDate.simpleDateToCalendar(d3));
-        List<Calendar> actual = mAvailableSchedule.getAvailableCalendarList();
-        for(int i=0; i<actual.size(); i++) {
-            assertThat(actual.get(i).compareTo(expected.get(i))).isEqualTo(0);
-        }
-    }
-
-    @Test
-    public void doSortUnavailableCalendarList() {
-        mAvailableSchedule = new AvailableSchedule();
-        SimpleDate d0 = new SimpleDate(2016, 0, 1);
-        SimpleDate d1 = new SimpleDate(2015, 11, 1);
-        SimpleDate d2 = new SimpleDate(2016, 1, 23);
-        SimpleDate d3 = new SimpleDate(2016, 2, 12);
-        SimpleDate d4 = new SimpleDate(2016, 1, 5);
-        mAvailableSchedule.addUnavailableCalendarList(d0);
-        mAvailableSchedule.addUnavailableCalendarList(d1);
-        mAvailableSchedule.addUnavailableCalendarList(d2);
-        mAvailableSchedule.addUnavailableCalendarList(d3);
-        mAvailableSchedule.addUnavailableCalendarList(d4);
-        List<Calendar> expected = new ArrayList<>();
-        expected.add(SimpleDate.simpleDateToCalendar(d1));
-        expected.add(SimpleDate.simpleDateToCalendar(d0));
-        expected.add(SimpleDate.simpleDateToCalendar(d4));
-        expected.add(SimpleDate.simpleDateToCalendar(d2));
-        expected.add(SimpleDate.simpleDateToCalendar(d3));
-        List<Calendar> actual = mAvailableSchedule.getUnavailableCalendarList();
-        for(int i=0; i<actual.size(); i++) {
-            assertThat(actual.get(i).compareTo(expected.get(i))).isEqualTo(0);
-        }
     }
 
 }

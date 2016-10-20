@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="MultiSelectableCalenderView">
+    <declare-styleable name="MultiSelectableCalendarView">
         <attr name="monthBackgroundColor" format="color" />
         <attr name="monthTextColor" format="color" />
         <attr name="weekBackgroundColor" format="color" />
@@ -11,6 +11,7 @@
         <attr name="availableDayTextColor" format="color" />
         <attr name="unavailableDayBackgroundColor" format="color" />
         <attr name="unavailableDayTextColor" format="color" />
+        <attr name="otherMonthDayTextColor" format="color" />
         <attr name="chevronColor" format="color" />
     </declare-styleable>
 </resources>
