@@ -1,9 +1,5 @@
 apply plugin: 'com.android.library'
 
-def siteUrl = 'https://github.com/e10dokup/MultiSelecableCalendar'
-def gitUrl = 'https://github.com/e10dokup/MultiSelecableCalendar.git'
-
-
 def versionMajor = 0
 def versionMinor = 2
 def versionPatch = 3
@@ -11,9 +7,6 @@ def versionBuild = 0
 
 def libVersionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch * 10 + versionBuild
 def libVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
-
-group = 'xyz.dokup.multiselectablecalendar'
-version = libVersionName
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -46,21 +39,35 @@ android {
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-bintray {
-    user = bintray_user
-    key = bintray_api_key
+group = 'xyz.dokup.multiselectablecalendar'
+version = libVersionName
 
-    configurations = ['archives'] //When uploading configuration files
+def siteUrl = 'https://github.com/e10dokup/MultiSelecableCalendar'
+def gitUrl = 'https://github.com/e10dokup/MultiSelecableCalendar.git'
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_API_KEY')
+
+    publish = true
+    configurations = ['archives']
     pkg {
         repo = 'maven'
-        name = 'multiselectablecalendar'
+        name = project.name
+        userOrg = 'e10dokup'
         desc = 'Multi state holding calendar'
         websiteUrl = siteUrl
-        issueTrackerUrl = 'https://github.com/e10dokup/MultiSelecableCalendar/issues'
+        issueTrackerUrl = "${siteUrl}/issues"
         vcsUrl = gitUrl
         licenses = ['Apache-2.0']
         labels = ['android']
         publicDownloadNumbers = true
+        version {
+            name = libVersionName
+            desc = "MultiSelectableCalendar ${libVersionName}"
+            released  = new Date()
+            vcsTag = libVersionName
+        }
     }
 }
 
