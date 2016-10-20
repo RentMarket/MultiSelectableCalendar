@@ -27,11 +27,11 @@ import dokup.xyz.multiselectablecalendar.util.ScheduleMode;
 /**
  * Created by e10dokup on 2016/08/26
  **/
-public class MultiSelectableCalenderView extends LinearLayout {
+public class MultiSelectableCalendarView extends LinearLayout {
     @SuppressWarnings("unused")
-    private static final String TAG = MultiSelectableCalenderView.class.getSimpleName();
+    private static final String TAG = MultiSelectableCalendarView.class.getSimpleName();
     @SuppressWarnings("unused")
-    private final MultiSelectableCalenderView self = this;
+    private final MultiSelectableCalendarView self = this;
 
     private static final int COLUMN_SIZE = 7;
     private static final int ROW_SIZE = 6;
@@ -84,7 +84,7 @@ public class MultiSelectableCalenderView extends LinearLayout {
     private OnScheduleChangedListener mListener;
 
 
-    public MultiSelectableCalenderView(Context context) {
+    public MultiSelectableCalendarView(Context context) {
         super(context);
         mContext = context;
         mMonthBackgroundColor = ContextCompat.getColor(mContext, R.color.default_background_month);
@@ -102,14 +102,14 @@ public class MultiSelectableCalenderView extends LinearLayout {
         createViews();
     }
 
-    public MultiSelectableCalenderView(Context context, AttributeSet attrs) {
+    public MultiSelectableCalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         setAttributes(attrs);
         createViews();
     }
 
-    public MultiSelectableCalenderView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MultiSelectableCalendarView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
         setAttributes(attrs);
@@ -157,19 +157,19 @@ public class MultiSelectableCalenderView extends LinearLayout {
     }
 
     private void setAttributes(AttributeSet attrs) {
-        TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.MultiSelectableCalenderView);
-        mMonthBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_monthBackgroundColor, ContextCompat.getColor(mContext, R.color.default_background_month));
-        mMonthTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_monthTextColor, ContextCompat.getColor(mContext, R.color.text_color));
-        mWeekBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_weekBackgroundColor, ContextCompat.getColor(mContext, R.color.white));
-        mWeekTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_weekTextColor, ContextCompat.getColor(mContext, R.color.text_color));
-        mDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_dayBackgroundColor, ContextCompat.getColor(mContext, R.color.white));
-        mDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_dayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
-        mAvailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_availableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.available_day_background));
-        mAvailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_availableDayTextColor, ContextCompat.getColor(mContext, R.color.white));
-        mUnavailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.unavailable_day_background));
-        mUnavailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_unavailableDayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
-        mOtherMonthDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_otherMonthDayTextColor, ContextCompat.getColor(mContext, R.color.grey));
-        mChevronColor = typedArray.getColor(R.styleable.MultiSelectableCalenderView_chevronColor, ContextCompat.getColor(mContext, R.color.text_color));
+        TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.MultiSelectableCalendarView);
+        mMonthBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_monthBackgroundColor, ContextCompat.getColor(mContext, R.color.default_background_month));
+        mMonthTextColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_monthTextColor, ContextCompat.getColor(mContext, R.color.text_color));
+        mWeekBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_weekBackgroundColor, ContextCompat.getColor(mContext, R.color.white));
+        mWeekTextColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_weekTextColor, ContextCompat.getColor(mContext, R.color.text_color));
+        mDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_dayBackgroundColor, ContextCompat.getColor(mContext, R.color.white));
+        mDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_dayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
+        mAvailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_availableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.available_day_background));
+        mAvailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_availableDayTextColor, ContextCompat.getColor(mContext, R.color.white));
+        mUnavailableDayBackgroundColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_unavailableDayBackgroundColor, ContextCompat.getColor(mContext, R.color.unavailable_day_background));
+        mUnavailableDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_unavailableDayTextColor, ContextCompat.getColor(mContext, R.color.text_color));
+        mOtherMonthDayTextColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_otherMonthDayTextColor, ContextCompat.getColor(mContext, R.color.grey));
+        mChevronColor = typedArray.getColor(R.styleable.MultiSelectableCalendarView_chevronColor, ContextCompat.getColor(mContext, R.color.text_color));
         typedArray.recycle();
     }
 
