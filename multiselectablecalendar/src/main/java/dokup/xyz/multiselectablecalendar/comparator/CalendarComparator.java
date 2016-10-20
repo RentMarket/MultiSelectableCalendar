@@ -12,7 +12,8 @@ public class CalendarComparator implements Comparator<Calendar> {
 
     @Override
     public int compare(Calendar c1, Calendar c2) {
-        int diff = c1.compareTo(c2);
-        return diff >= 0 ? 1 : -1;
+        if(c1.before(c2)) return -1;
+        if(c1.after(c2)) return 1;
+        return 0;
     }
 }
