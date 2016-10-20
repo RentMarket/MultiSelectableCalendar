@@ -1,0 +1,47 @@
+box: e10dokup/android:build-tools-24.0.0_target-api-24
+
+build:
+  steps:
+    - script:
+        name: show base information
+        code: |
+          gradle -v
+          echo $ANDROID_HOME
+          echo $ANDROID_BUILD_TOOLS
+          echo $ANDROID_UPDATE_FILTER
+    - script:
+        name: run gradle test
+        code: |
+          gradle --full-stacktrace -info --project-cache-dir=$WERCKER_CACHE_DIR :multiselectablecalendar:test
+    - script:
+        name: start android emulator
+        code: |
+          start-emulator
+    - script:
+        name: run gradle connectedAndroidTest
+        code: |
+          gradle --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR :multiselectablecalendar:connectedAndroidTest
+  after-steps:
+    - script:
+        name: inspect build result
+        code: |
+          pwd
+          ls -la ./multiselectablecalendar/build
+          ls -la ./multiselectablecalendar/build/outputs/
+          cp -r ./multiselectablecalendar/build/outputs/* ${WERCKER_REPORT_ARTIFACTS_DIR}
+          REPORT_INDEX=./multiselectablecalendar/build/reports/androidTests/connected/index.html
+          python .wercker/report.py $REPORT_INDEX
+deploy:
+  steps:
+    - script:
+        name: show base information
+        code: |
+          gradle -v
+    - script:
+        name: build with gradle
+        code: |
+          gradle build
+    - script:
+        name: upload to bintray
+        code: |
+          gradle bintrayUpload
